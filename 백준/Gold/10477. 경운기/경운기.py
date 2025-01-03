@@ -1,5 +1,3 @@
-import math
-
 def get_count(a, b):
     result = 0
     i = 0
