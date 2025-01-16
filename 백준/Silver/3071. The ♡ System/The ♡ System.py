@@ -2,7 +2,7 @@ import sys
 input = sys.stdin.readline
 
 # 균형 3진법
-def base3(n):
+def balanced_ternary(n):
     if n == 0:
         return "0"
     
@@ -27,4 +27,4 @@ T = int(input())
 
 for _ in range(T):
     n = int(input())
-    print(base3(n))
+    print(balanced_ternary(n))
