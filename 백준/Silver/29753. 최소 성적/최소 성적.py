@@ -1,30 +1,34 @@
-
-from decimal import Decimal, ROUND_DOWN
 import sys
+import math
 
 input = sys.stdin.readline
 
-grade = {'A+': Decimal('4.50'), 'A0': Decimal('4.00'), 'B+': Decimal('3.50'), 
-         'B0': Decimal('3.00'), 'C+': Decimal('2.50'), 'C0': Decimal('2.00'), 
-         'D+': Decimal('1.50'), 'D0': Decimal('1.00'), 'F': Decimal('0.00')}
+# 성적 변환 테이블
+grade_dict = {"F": 0.00, "D0": 1.00, "D+": 1.50, "C0": 2.00, "C+": 2.50, "B0": 3.00, "B+": 3.50, "A0": 4.00, "A+": 4.50}
 
+# 수강 과목 수, 최소 평균 평점 기준
 N, X = input().split()
-N, X = int(N), Decimal(X)
+N, X = int(N), float(X)
 
-cnt, score = 0, 0
-for i in range(N-1):
-    c, g = input().split()
-    score += int(c) * grade[g]
-    cnt += int(c)
+# 학점 성적
+courses = [(int(c), g) for _ in range(N - 1) for c, g in [input().split()]]
 
+# 나머지 학점
 L = int(input())
-cnt += L
 
-answer = 'impossible'
-for k, v in grade.items():
-    tmp = (score + (v * L)) / cnt
-    tmp = tmp.quantize(Decimal('0.01'), rounding=ROUND_DOWN)
-    if tmp > X:
-        answer = k
+# 현재까지의 학점 * 점수 합 및 총 학점 계산
+sum_score = sum(c * grade_dict[g] for c, g in courses) # 학점 * 점수
+total_credits = sum(c for c, _ in courses) + L # 총 학점
+
+answer = "impossible"
+
+# 가능한 최소 성적 찾기 (F부터 A+까지)
+for key, value in grade_dict.items():
+    total_score = sum_score + (L * value)
+    total_gpa = '%.3f'%(total_score / total_credits)
+
+    if float(total_gpa[:4]) > X:
+        answer = key
+        break
 
 print(answer)
