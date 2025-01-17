@@ -1,6 +1,4 @@
 import sys
-import math
-
 input = sys.stdin.readline
 
 # 성적 변환 테이블
